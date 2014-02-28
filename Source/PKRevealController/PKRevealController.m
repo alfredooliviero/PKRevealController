@@ -73,6 +73,8 @@ typedef struct
     PKRevealControllerFrontViewInteractionFlags _frontViewInteraction;
 }
 
+@synthesize rightViewWidthRange;
+
 #pragma mark - Properties
 @property (nonatomic, strong, readwrite) PKRevealControllerView *frontView;
 @property (nonatomic, strong, readwrite) PKRevealControllerView *leftView;
@@ -554,13 +556,27 @@ typedef struct
     _recognizesResetTapOnFrontViewInPresentationMode = DEFAULT_RECOGNIZES_RESET_TAP_ON_FRONT_VIEW_IN_PRESENTATION_MODE_VALUE;
 }
 
+-(void)setRightViewWidthRange:(NSRange)rightViewWidthRange{
+    _rightViewWidthRange = rightViewWidthRange;
+    if (self.rightView){
+        CGRect rframe = self.view.bounds;
+        rframe.size.width = [self rightViewMinWidth];
+        rframe.origin.x = self.view.bounds.size.width - rframe.size.width;
+        self.rightView = [[PKRevealControllerView alloc] initWithFrame:rframe];
+    }
+}
+
 - (void)setupContainerViews
 {
-    self.rightView = [[PKRevealControllerView alloc] initWithFrame:self.view.bounds];
+    CGRect rframe = self.view.bounds;
+    rframe.size.width = [self rightViewMinWidth];
+    rframe.origin.x = self.view.bounds.size.width - rframe.size.width;
+    self.rightView = [[PKRevealControllerView alloc] initWithFrame:rframe];
+
     self.leftView = [[PKRevealControllerView alloc] initWithFrame:self.view.bounds];
     self.frontView = [[PKRevealControllerView alloc] initWithFrame:self.view.bounds];
     
-    self.rightView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    self.rightView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight);
     self.leftView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     self.frontView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     
