@@ -73,8 +73,6 @@ typedef struct
     PKRevealControllerFrontViewInteractionFlags _frontViewInteraction;
 }
 
-@synthesize rightViewWidthRange;
-
 #pragma mark - Properties
 @property (nonatomic, strong, readwrite) PKRevealControllerView *frontView;
 @property (nonatomic, strong, readwrite) PKRevealControllerView *leftView;
@@ -107,6 +105,7 @@ typedef struct
 @end
 
 @implementation PKRevealController
+@synthesize rightViewWidthRange=_rightViewWidthRange;
 
 #pragma mark - Initialization
 
